@@ -61,15 +61,22 @@ module.exports = {
             });
   },
 
-  changeEventRoom (root, { id, roomId }, context) {
+  changeEventRoom (root, { id, roomId }) {
     return models.Event.findById(id)
             .then(event => {
-              event.setRoom(id);
+              return event.setRoom(roomId);
             });
   },
 
   removeEvent (root, { id }, context) {
     return models.Event.findById(id)
             .then(event => event.destroy());
+  },
+
+  // Add user to event
+  addUserToEvent (root, {id, userId}) {
+    return models.Event.findById(id).then(event => {
+      return event.addUser(userId).then(() => event);
+    });
   }
 };
